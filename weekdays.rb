@@ -9,3 +9,5 @@ elsif today.sunday?                         # otherwise, if today is sunday...
 else    
     puts "Go to work"                       # For any weekdays, just output "go to work"
 end                                        
+
+# I ran this program again on a Saturday and it worked correctly! Must be time to do chores. 
