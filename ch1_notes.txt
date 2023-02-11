@@ -1,0 +1,53 @@
+The text first went over rbenv version management. The reference recommends a linux distro, which I currently have. 
+I am running the latest Ruby version available. I didn't see a version as new as yours though! How'd you get 3.1?  
+
+```
+ruby -v
+ruby 3.0.1p64 (2021-04-05 revision 0fb782ee38) [x86_64-linux]
+```
+
+Since I'm running the most current-ish version, and am familiar with the command line / IRB, I only skimmed Running Ruby, and Creating Ruby Programs. 
+I did complete the exercises just in case. Here is the first one, where I define the method "sum", where n1 and n2 are the parameters to pass the method's 
+arguments (which it will combine using the + operator). This works for both integers and strings as seen by this output: 
+
+
+```
+irb(main):001:1* def sum(n1,n2)
+irb(main):002:1*   n1 + n2
+irb(main):003:0> end
+=> :sum
+irb(main):004:0> sum(3,4)
+=> 7
+irb(main):005:0> sum("cat","dog")
+=> "catdog"
+```
+
+Defining the method "sum" returned the value :sum, which is a symbol that matches the name of the method. The text says we'll learn more about this 
+in later chapters. Briefly Googling tells me I've misinterpreted it, though. A symbol is generally used to reference a resource. For instance, in my game's 
+state manager, I could have just had the scene use a boolean check, since that's what it was pretty much doing anyway (except needlessly complicated with a ternary expression `MOVES.include?(@@action) ? @@scene = :interact : @@scene = :backdrop`. Could have done something simple like @@scene = true/false. 
+
+
+... 
+
+
+To demonstrate understanding of creating Ruby programs, the reference asked me to make a directory. I chose my home directory to call command 
+
+`mkdir pickaxe`
+
+like it recommended. I then created a simple rb test program called `myprog.rb` in my IDE of choice (VSCode) and saved it to this directory: 
+
+```
+puts "Hello, Ruby Programmer"
+puts "It is now #{Time.now}"
+```
+
+which returned: 
+
+```
+Hello, Ruby Programmer
+It is now 2023-02-09 15:13:42 -0500
+```
+
+
+
+
