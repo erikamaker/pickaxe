@@ -15,7 +15,7 @@ puts "A violin is a #{instrument_section[:violin]} instrument"      # => A violi
 
 # I thought it might be better for the entire example to be written as a method, but
 # maybe that unnecessarily complicates it? It's just easier / faster to get the key's value. 
-# The downside of mine is that I had to change the opening "A" to "The" to account for noun / values. 
+# The downside of mine is that I had to change the opening "A" to "The" to account for noun / vowels. 
 
 
 
