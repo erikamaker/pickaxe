@@ -1,2 +1,2 @@
 puts "Hello, Ruby Programmer"
-puts "It is now #{Time.now}"
+puts "It is now #{Time.now}" 
