@@ -139,7 +139,7 @@ Price = 33.8
 New price = 25.349999999999998
 ```
 
-The method .price= is an assignment invoking the price=() method. Here, it's reassigning the original price value to equal itself multiplied by .75, which has been passed as an argument on line 16. The ruby interpreter ignores the whitespace between the end of the name and the equals sign. The instance variable's value is now updated to the new price. 
+The method .price= towards the end of the program is an assignment invoking the price=() method in the class. Here, it's reassigning the original price value to equal itself multiplied by .75, which has been passed as an argument on line 16. The ruby interpreter ignores the whitespace between the end of the name and the equals sign. The instance variable's value is now updated to the new price. 
 
 `book.price=(1.50)` is also idiomatically written `book.price = 1.50`. A shortcut for write-only is to use attribute writer. However, most people want to use both, so attribute accessor is the standard. I'm not fully understanding why we have attr_reader for :isbn-- wouldn't it be quicker to just say: 
 
