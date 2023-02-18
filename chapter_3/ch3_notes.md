@@ -17,7 +17,7 @@ another_book = BookInStock.new
 ```
 
 
-Both of these instances have different object_ids, but will otherwise behave very much the same. They don't yet have any instance variables or other held information. The `initialize` method sets the state of each of these object during construction (`.new`). This individualized state is stored using instance variables. We can update the definition to include this state: 
+Both of these instances have different object_ids, but will otherwise behave very much the same. They don't yet have any instance variables or other held unique information besides their IDs. The `initialize` method sets the state of each of these object during construction (`.new`). This individualized state is stored using instance variables. We can update the definition to include this state: 
 
 
 ```
