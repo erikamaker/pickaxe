@@ -85,7 +85,7 @@ I've read it multiple times and I'm not following. What 'other objects' are we r
 
 ```
 class BookInStock
-  attr_reader :isbn, :price                 # attr_reader creates the methods that we otherwise individually wrote in example 3.                                 above
+  attr_reader :isbn, :price                 # attr_reader creates the methods that we otherwise individually wrote in example 3.                         
   def initialize(isbn, price)
     @isbn = isbn
     @price = Float(price)
