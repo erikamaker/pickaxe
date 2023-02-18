@@ -172,7 +172,7 @@ In exercise 8, a new method `price_in_cents=(cents)` is created. The text explai
 
 The first `price_in_cents` method calculates a value using the accessed value `price`. It's only reading the value of price, and making a new return value based on a simple calculation INVOLVING `price`'s VALUE, but not the actual instance variable itself. 
 
-The second method is accepting `cents` as an argument to actually set a new value to the instance variable `@price`. I experimented by removing the @ symbol from the instance variable @price, and found that the 1234 value of line 24 means nothing to instance without it.
+The second method is accepting `cents` as an argument to actually set a new value to the instance variable `@price`. I experimented by removing the @ symbol from the instance variable @price, and found that the 1234 value of line 24 means nothing functional to the instance without it.
 
 
 # ATTRIBUTES, INSTANCE VARIABLES, AND METHODS
