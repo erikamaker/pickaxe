@@ -204,6 +204,7 @@ stock_stats.rb:1:in `require_relative': cannot load such file -- /home/erikamake
 
 I'm going to keep at this until I can get the program running. I'm currently about 7 pages from the end of this chapter, but I don't want to move on until I have this program funcitoning like it should. 
 
+
 # 1 WEEK LATER. . . SPECIFYING ACCESS CONTROL 
 
 Okay, back on track. This section of the text starts off urging me to consider how much of a class is exposed to the rest of the program. I learned that allowing too much access risks codependency of other classes (or 'coupling'). Controlling access to the methods is controlling access to the object, since this is the only way to change an object's state in Ruby. 
@@ -310,6 +311,7 @@ I created and digested the small program with comments throughout. It was pretty
 
 Protected access is used when objects need to access the internal state of other objects of the same class. Two account objects can compare their balances directly, but they can hide those balances from the rest of the program. Toggling `protected` on the accessor method for `@balance` broke it similarly. 
 
+
 # VARIABLES 
 
 Variables are used to keep track of objects. They each reference an object. This is something Ian and I worked through together when he first offered his help in analyzing my understanding of encapsulation. A program's instance of an object holds a place in memory. A variable references it. 
@@ -336,6 +338,7 @@ person2 = person1.dup
 
 
 You can also prevent a certain object from changing by freezing it. Trying to alter it will raise a RuntimeError exception. Numbers and symbols are always frozen. I felt this intuitively, so it was a fun "click" in my head to see this written in the text. 
+
 
 # Reopening Classes 
 
