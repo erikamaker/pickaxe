@@ -2,8 +2,6 @@
 
 The text explains that, naturally, most programs handle collections of data. It describes various examples (like songs in a jukebox playlist, books in a store, people in a course). It explains that there are two classes used to handle collections: arrays and hashes. I am reasonably familiar with this enough to be excited to see what new details I learn. Mastery of these and their large interfaces is an important part of being a Ruby developer.
 
-Doing a few pages a day, starting on the weekend. I should have Chapter 4 finished by 3/11. 
-
 
 # ARRAYS
 
@@ -27,6 +25,7 @@ a[1,4]
    => ["rat","mat","bat","fat"]
    
 ```
+
 
 The `[]` operator has a corresponding `[]=` operator, that lets you set the element values in an array. If it's a single integer, the element at that index will be replaced by the assigned value. Neglected gaps will be filled with `nil`. It's a regular method that could be written more verbosely as `a.[]=(index,new_value)`. 
 
@@ -72,5 +71,91 @@ The last line is equivalent to writing `user = {firstname:,lastname:} since the 
 
 Arrays are advantageous in that they can use ANY object as an index. Ruby remembers the order in which an item is added to a hash. When you iterate over the entries, Ruby will return them in that order. 
 
-> This surprised me-- don't arrays behave the same way? DOn't they remember the order in which something is added to the array? If something is pushed to an array, it's always pushed to the end. What other way would it order them (besides from the starting index)? 
+> This surprised me-- don't arrays behave the same way? Don't they remember the order in which something is added to the array? If something is pushed to an array, it's always pushed to the end. What other way would it order them (besides from the starting index)? 
+
+
+# DIGGING 
+
+Sine data can be complicated, it doesn't always confined to a hash or array, but instead a complex package of both. Ruby helps make accessing such complicated structures easier with the `dig` method. This method is callable for arrays, hashes, and structs (I've briefly used and looked into structs before, but it was a long time ago and I _definitely_ didn't know what I was doing even a little bit). This method lets us, as its aptly named, dig through the structure. 
+
+For something like: 
+
+
+```
+data = {
+  mcu: [ 
+    {name: "Iron Man", year: 2008, actors: ["Robert Downey Jr.", "Gwyneth Paltrow"]}
+  ],
+  lotr: [
+    {name: "Fellowship of the Ring", year: 2001, actors: ["Ian McKellen","Elijah Wood"]}
+  ]
+} 
+
+
+data[:lotr][0][:actors][1]        # => "Elijah Wood"
+data.dig(:lotr, 0, :actors, 1)    # => "Elijah Wood"
+```
+
+According to the text, this is useful because if an element is not in the data structure, it returns `nil` and not an exception. 
+
+> I'm a little unclear about why this is an advantage. Doesn't Array also return `nil` if the element doesn't exist? I tested below to make sure I wasn't wrong about that, so I must be misinterpreting the text? 
+
+
+```
+erikamaker@erikas-computer:~$ irb
+irb(main):001:0> array = ["thing","stuff","other"]
+=> ["thing", "stuff", "other"]
+irb(main):002:0> array[0]
+=> "thing"
+irb(main):003:0> array[5]
+=> nil
+```
+
+
+# WORD FREQUENCY: USING HASHES AND ARRAYS
+
+Alright, time to build a program that: calculates the number of each time a word occurs in a given text.
+
+1.) Step 1: take a string of text and return an array of the words (I made something up for Bonecrawl like this; curious how they do it!). 
+
+   * Update: I'm thrilled to see that they also simply downcased the received string. But: 
+   * I didn't use `scan` like they did, nor did I use the pattern `/[\w']+/` to match word characters. 
+   * I learned that I could condense my own version, because `scan` returns an array based on that pattern.
+   * In ADDITION, this method removes the need to eliminate punctuation, as it ONLY pattern matches for word characters. 
+   * See: `words_from_string.rb`
+   
+2.) Step 2: Build a count fo reach distinct word, indexing a hash with each word and the count as its value. See 
+
+   * The text describes an incrementer that will increase each found word by 1: `counts[next_word] += 1`
+   * It notes that this wouldn't work when the word is encountered for the first time, however. It would crash the program. 
+   * One solution is to check whether the entry exists before doing the increment, like this prescribed attempt: 
+   
+   
+```
+if counts.has_key?(next_word)     # the text does it this way, but I believe I can just use `.key?(next_word)` for the same effect. 
+  counts[next_word] += 1
+else 
+  counts[next_word] = 1
+end
+```
+
+
+   * This is how I would personally do it, so I thought I was on the right track. However, the text says there's an "tidier" way. 
+   * See : count_frequency.rb
+
+
+3.) Step 3: Decide the structure for how the words in this hash object are ordered. Currently, it's by appearance. 
+
+   * The text explains that it would be better to sort by frequencies of the words. 
+   * To do that, we'll use the `sort_by` method. I've briefly used this method before but only superficially understand it. 
+   * The text explains that, when using `sort_by`, I give it a block that tells the sort what to use when making comparisons. 
+   * In our case, we're using count. This results in an array bearing a set of two-element arrays: 
+   * Each of these two-element arrays correspond to a key/count pair in the hash object. 
+   * See: ugly_word_count.rb
+
+Step 2 implements a loop, the first of which the text introduces. It briefly explains how the `each` method takes a block argument and executes the block once for each element in the array. In our case (a hash object), it's incrementing the value of each indexed word from the array of word characters. I commented on the program above to explain what was happening. I was familiar with it, and it's good to cross this off my list of things I understand (at least on a foundational level). 
+
+
+
+# PICK UP AT BOTTOM OF PAGE 60
 
