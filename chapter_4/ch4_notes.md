@@ -227,7 +227,38 @@ puts words_from_string(raw_text)
 ```
 
 
-Above, each message returns an entirely new collection of data that is processed by the next message all the way down to `map`. The text says that debugging a long chain of methods like that can be done with `tap`, a method that lets you "tap into" a method pipeline. And this is where my brain is taking a break. Pick back up middle of page 64 :-) 
+Above, each message returns an entirely new collection of data that is processed by the next message all the way down to `map`. The text says that debugging a long chain of methods like that can be done with `tap`, a method that lets you "tap into" a method pipeline. The text uses an example `bester_word_count_with_tap.rb`. This can be found in the word_count directory.
+
+Here is a quick example that ChatGPT helped put together for me to understand how the method works: 
 
 
+```
+person = { name: "Alice", age: 30 }
+
+person.tap do |p|
+  p[:age] += 1         # increment the age key by 1, but we also want to return the original person hash.
+end
+
+puts person.inspect
+```
+
+The tap method takes a block, which is executed with the object as its argument. Doing this, we can perform any operation we'd like to on the object. Here, we increment `age` once. Then, the tap method returns the original object. That object has been mutated, and can take methods chained to it, like `inspect` above. 
+
+So the output of this code would be:
+
+
+```
+{:name=>"Alice", :age=>31}
+```
+
+Notice that the person hash has been modified to have an age value of 31, even though we didn't explicitly assign it. I like to think of the method as "tapping" into the object so it can mutate it. This sounds incredibly useful, and is a concept I hadn't yet read about. 
+
+Note to self: 
+
+   `each` iterates over a collection and DOES some kind of block to each element.                          
+   `map`  iterates over a collection and RETURNS a NEW object after executing a block on each element.    
+   `tap`  iterates over a collection and MUTATES / RETURNS the ORIGINAL element after executing a block on it.       
+
+
+# Blocks 
 
