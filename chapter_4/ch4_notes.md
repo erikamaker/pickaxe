@@ -251,6 +251,7 @@ So the output of this code would be:
 {:name=>"Alice", :age=>31}
 ```
 
+
 Notice that the person hash has been modified to have an age value of 31, even though we didn't explicitly assign it. I like to think of the method as "tapping" into the object so it can mutate it. This sounds incredibly useful, and is a concept I hadn't yet read about. 
 
 Note to self: 
@@ -262,3 +263,79 @@ Note to self:
 
 # Blocks 
 
+Blocks are "chunks" of code. They're enclosed either in braces, or between keywords `do` and `end`. Both implementations are identical except for precdence (which is rarely a practical issue). However, Ruby convention favors using braces for blocks that fit on one line, and the latter when a block spans multiple lines. For example, the most recent small program we built used method chaining, which covered multiple lines-- but the blocks within it fit on one line, so they use braces. Also, style has spaces between the brace and the code to distinguish a block from a hash literal. 
+
+I can think of a block like the body of an anonymous method. I really like that the text suggests this, because that's what it intuitively feels like. Just like a method, it can take parameters (however, unlike a method, the parameters appear at the start of the block between pipes (`||`)). Like a method, the body of a block is not executed at first sight during interpretation-- instead, the block is saved to memory (if only briefly) to be called later.
+
+Blocks can appear only after the invocation of a method. If the method takes parameters, the block is written after said parameters. The block, in this form, would be a sort of 'extra parameter' that acts like a mini-temporary-method, which is itself passed to the original method. 
+
+
+```
+sum = 0
+[1,2,3,4].each do |value|
+  square = value * value
+  sum += square
+end
+puts sum 
+```
+
+
+The above block is being called by the each method, where each element is passed to the block. Each element here is being passed to the block as the parameter `value`. Parameters are always local to a block, even if they have the same name as variables in the surrounding scope. The `sum` variable is declared outside of the block, and called after the block, meaning that the values calculated within the block remain until the method it exists within ends. However, we cannot call `value` outside of the block, as it's local to the block itself. See below: 
+
+
+```
+irb(main):002:1* [1,2,3].each do |v|
+irb(main):003:1*   square = v * v
+irb(main):004:1*   sum += square
+irb(main):005:0> end
+=> [1, 2, 3]
+irb(main):006:0> puts sum
+14
+=> nil                                                   
+irb(main):007:0> puts square
+(irb):7:in `<main>': undefined local variable or method `square' for main:Object (NameError)   
+```
+
+
+That said, a block does not create new variables with existing names, and will overwrite them. See below: 
+
+
+```
+irb(main):010:1* square = "SQUARE"
+irb(main):011:1* [1,2,3].each do |v|
+irb(main):012:1*   square = v * v
+irb(main):013:1*   sum += square
+irb(main):014:0> end
+=> [1, 2, 3]
+irb(main):015:0> puts sum
+14
+=> nil                                                   
+irb(main):016:0> puts square
+9
+```
+
+In other scenarios where `square` may have a preexisting method it calls from its class, a method that might not work on the new definition from the block. That could cause more than just unexpected behavior as seen above-- it could cause an error. You can also define block-local variables by putting them after a semicolon in the block's parameter (I had no idea you could do that! So cool). By making `square` local to the block, values assigned inside the block won't affect the value of `square` elsewhere in the program: 
+
+
+```
+some_collection = [1,2,3]
+some_collection.each do |number; square|  # This cool syntax? It's rare and unconventional. 
+... 
+```
+
+
+Oh, and there's a shortcut way to access arguments to a block based on their numerical position (wouldn't the term 'index' have applied here, or am I wrong? 'Numerical position' just felt stilted). 
+
+
+```
+[1,2].each { |thing| puts thing }
+```
+
+is the same as
+
+
+```
+[1,2].each { puts _1 }
+```
+
+In the shortcut, the variable `_1` is special, and indicates the first positional argument to the block. If there were two, you could reference them as `_2`, and so on. However, the text advises that if this goes past position 1, I should probably give the block variables their own names. 
