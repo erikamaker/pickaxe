@@ -26,7 +26,7 @@ a[1,4]
 
 ```
 
-   
+
 The `[]` operator has a corresponding `[]=` operator, that lets you set the element values in an array. If it's a single integer, the element at that index will be replaced by the assigned value. Neglected gaps will be filled with nil. It's a regular method that could be written more verbosely as `a.[]=(index,new_value)`.
 
 If the index for this method is two numbers or a range, the elements in the original array are replaced by the right side of the assignment. If the length of the elements used on the left side of this operation is zero, the right side is simply moved before the start position, and no elements are removed. However, if the right side is an array, the elements are used to replace the original. The right side is not inserted as one element in this case, but rather each element is inserted individually.
@@ -64,7 +64,7 @@ The value of a symbol doesn't change, so symbols are often used as hash keys sin
 ```
 firstname = "Erika"
 lastname = "Maker"
-user = {firstname: firstname, lastname: lastname} 
+user = {firstname: firstname, lastname: lastname}
 ```
 
 
@@ -84,13 +84,13 @@ For something like:
 
 ```
 data = {
-  mcu: [ 
+  mcu: [
     {name: "Iron Man", year: 2008, actors: ["Robert Downey Jr.", "Gwyneth Paltrow"]}
   ],
   lotr: [
     {name: "Fellowship of the Ring", year: 2001, actors: ["Ian McKellen","Elijah Wood"]}
   ]
-} 
+}
 
 
 data[:lotr][0][:actors][1]        # => "Elijah Wood"
@@ -122,7 +122,7 @@ Alright, time to build a program that: calculates the number of each time a word
 
 Update: I'm thrilled to see that they also simply downcased the received string. But, I didn't use `scan` like they did, nor did I use the pattern `/[\w']+/` to match word characters. I learned that I could condense my own version, because scan returns an array based on that pattern. In addition, this method removes the need to eliminate punctuation, as it ONLY pattern matches for word characters. See: `words_from_string.rb`
 
-2.) Step 2: Build a count fo reach distinct word, indexing a hash with each word and the count as its value. 
+2.) Step 2: Build a count fo reach distinct word, indexing a hash with each word and the count as its value.
 
 The text describes an incrementer that will increase each found word by 1: `counts[next_word] += 1`
 
@@ -131,9 +131,9 @@ One solution is to check whether the entry exists before doing the increment, li
 
 
 ```
-if counts.has_key?(next_word)     # the text does it this way, but I believe I can just use `.key?(next_word)` for the same effect. 
+if counts.has_key?(next_word)     # the text does it this way, but I believe I can just use `.key?(next_word)` for the same effect.
   counts[next_word] += 1
-else 
+else
   counts[next_word] = 1
 end
 ```
@@ -153,18 +153,18 @@ See: `ugly_word_count.rb`
 Step 2 implements a loop, the first of which the text introduces. It briefly explains how the each method takes a block argument and executes the block once for each element in the array. In our case (a hash object), it's incrementing the value of each indexed word from the array of word characters. I commented on the program above to explain what was happening. I was familiar with it, and it's good to cross this off my list of things I understand (at least on a foundational level).
 
 
-# Minitest 
+# Minitest
 
-To validate the code, we're using a testing framework called Minitest that comes with the standard Ruby distros. We learn more about it in Chapter 13, but for now, it's just worth knowing that the class MiniTest::Test brings in test functionality. See file `test_words_from_string.rb` for its implementation. The `assert_equal` method checks that two parameters are equal, using different control values in isolation to test them one at a time. 
+To validate the code, we're using a testing framework called Minitest that comes with the standard Ruby distros. We learn more about it in Chapter 13, but for now, it's just worth knowing that the class MiniTest::Test brings in test functionality. See file `test_words_from_string.rb` for its implementation. The `assert_equal` method checks that two parameters are equal, using different control values in isolation to test them one at a time.
 
-The test first requires the source file that contains the `words_from_string` method, and the unit testing framework. It defines a test class, meaning that any methods whose names start with `test` are automatically run by the testing framework. In our cases, they sucessfully ran all of them, validating six different assertions. (see both `test_words_from_string.rb` and `test_count_frequency.rb`. I didn't comment on the latter because the principle is the same as the former.) 
+The test first requires the source file that contains the `words_from_string` method, and the unit testing framework. It defines a test class, meaning that any methods whose names start with `test` are automatically run by the testing framework. In our cases, they sucessfully ran all of them, validating six different assertions. (see both `test_words_from_string.rb` and `test_count_frequency.rb`. I didn't comment on the latter because the principle is the same as the former.)
 
-At this point, the text went over the `tally` method that's been introduced to the standard library. I've used this method before and am pretty familiar with how to use it. Like the text says, it does exactly what the `count_frequency.rb` program does, but with less work (see: `better_word_count.rb`). 
+At this point, the text went over the `tally` method that's been introduced to the standard library. I've used this method before and am pretty familiar with how to use it. Like the text says, it does exactly what the `count_frequency.rb` program does, but with less work (see: `better_word_count.rb`).
 
 
 # Blocks and Enumeration
 
-In our last program to output the results of word frequency, there was a loop: 
+In our last program to output the results of word frequency, there was a loop:
 
 
 ```
@@ -173,14 +173,14 @@ top_five.reverse_each do |word, count|
 end
 ```
 
-The method `reverse_each` is an example of an iterator. An iterator invokes a block of code repeatedly. For instance, in my Bonecrawl engine, I use iterators to output the contents of the player's inventory. Another term that is exchangable for this type of method is "enumerator". 
+The method `reverse_each` is an example of an iterator. An iterator invokes a block of code repeatedly. For instance, in my Bonecrawl engine, I use iterators to output the contents of the player's inventory. Another term that is exchangable for this type of method is "enumerator".
 
-The most general iterator is `each`. This method takes a block and invokes it for each element contained in its (the block's) collection. In the above case, we're using reverse_each, which is just iterates from the other end of the collection. 
+The most general iterator is `each`. This method takes a block and invokes it for each element contained in its (the block's) collection. In the above case, we're using reverse_each, which is just iterates from the other end of the collection.
 
 
-# Map 
+# Map
 
-Enumerator methods have different behavior other than just executing a block of code. For instance, the enumerator method `map` helps write code more compactly. 
+Enumerator methods have different behavior other than just executing a block of code. For instance, the enumerator method `map` helps write code more compactly.
 
 
 ```
@@ -189,15 +189,15 @@ top_five.reverse_each do |word, count|
 end
 ```
 
-and 
+and
 
 
-`puts top_five.reverse.map { |word,count| "#{word}: #{count}" }` 
+`puts top_five.reverse.map { |word,count| "#{word}: #{count}" }`
 
 
-are effectively the same. What's happening is that `map` applies its block to each element of the array one after the other, returning a new array made up of the result of each invocation of the block. At least, that's what the text tells me, but I found the explanation a little quick. I hopped on ChatGPT to ask it to break the concept down for me (to answer a question you asked on another issue, yes, I use this tool sometimes--I find it super helpful for getting a quick answer on a concept that isn't clicking, or to walk me through an example). 
+are effectively the same. What's happening is that `map` applies its block to each element of the array one after the other, returning a new array made up of the result of each invocation of the block. At least, that's what the text tells me, but I found the explanation a little quick. I hopped on ChatGPT to ask it to break the concept down for me (to answer a question you asked on another issue, yes, I use this tool sometimes--I find it super helpful for getting a quick answer on a concept that isn't clicking, or to walk me through an example).
 
-This is the example it gave me: 
+This is the example it gave me:
 
 
 ```
@@ -207,29 +207,29 @@ squares = numbers.map { |number| number ** 2 }
 puts squares.inspect # Output: [1, 4, 9, 16, 25]
 ```
 
-It explained the broader concept that `map` allows me to iterate through a collection. It says that, during each iteration, it applies a transformation to each element in that object before returning a new array with the transformed elements. 
+It explained the broader concept that `map` allows me to iterate through a collection. It says that, during each iteration, it applies a transformation to each element in that object before returning a new array with the transformed elements.
 
-So, in the above example (which I totally get now), `map` iterates through the `numbers` array, and (just saying this in a familiar way) _for each_ element in that array, it transforms the element by squaring it. The output is therefore the square of each element in `numbers`. 
+So, in the above example (which I totally get now), `map` iterates through the `numbers` array, and (just saying this in a familiar way) _for each_ element in that array, it transforms the element by squaring it. The output is therefore the square of each element in `numbers`.
 
-This is great, because it kinda truncates the code we wrote earlier in `best_word_count.rb`, which was already refactored code. We can even chain the method `reverse` to map and output the array in reverse-order just like before (i.e. `puts top_five.reverse.map { |word,count| "#{word}: #{count}" }`). This is much more efficient. 
+This is great, because it kinda truncates the code we wrote earlier in `best_word_count.rb`, which was already refactored code. We can even chain the method `reverse` to map and output the array in reverse-order just like before (i.e. `puts top_five.reverse.map { |word,count| "#{word}: #{count}" }`). This is much more efficient.
 
 
-Because each local variable is only used as the receiver of the next message, you can chain all the values together: 
+Because each local variable is only used as the receiver of the next message, you can chain all the values together:
 
 
 ```
 puts words_from_string(raw_text)
   .tally
-  .sort_by { |word,count| count } 
+  .sort_by { |word,count| count }
   .last(5)
   .reverse
-  .map { |word, count| "#{word}: #{count}" } 
+  .map { |word, count| "#{word}: #{count}" }
 ```
 
 
 Above, each message returns an entirely new collection of data that is processed by the next message all the way down to `map`. The text says that debugging a long chain of methods like that can be done with `tap`, a method that lets you "tap into" a method pipeline. The text uses an example `bester_word_count_with_tap.rb`. This can be found in the word_count directory.
 
-Here is a quick example that ChatGPT helped put together for me to understand how the method works: 
+Here is a quick example that ChatGPT helped put together for me to understand how the method works:
 
 
 ```
@@ -242,7 +242,7 @@ end
 puts person.inspect
 ```
 
-The tap method takes a block, which is executed with the object as its argument. Doing this, we can perform any operation we'd like to on the object. Here, we increment `age` once. Then, the tap method returns the original object. That object has been mutated, and can take methods chained to it, like `inspect` above. 
+The tap method takes a block, which is executed with the object as its argument. Doing this, we can perform any operation we'd like to on the object. Here, we increment `age` once. Then, the tap method returns the original object. That object has been mutated, and can take methods chained to it, like `inspect` above.
 
 So the output of this code would be:
 
@@ -252,22 +252,22 @@ So the output of this code would be:
 ```
 
 
-Notice that the person hash has been modified to have an age value of 31, even though we didn't explicitly assign it. I like to think of the method as "tapping" into the object so it can mutate it. This sounds incredibly useful, and is a concept I hadn't yet read about. 
+Notice that the person hash has been modified to have an age value of 31, even though we didn't explicitly assign it. I like to think of the method as "tapping" into the object so it can mutate it. This sounds incredibly useful, and is a concept I hadn't yet read about.
 
-Note to self: 
+Note to self:
 
-   `each` iterates over a collection and DOES some kind of block to each element.                          
-   `map`  iterates over a collection and RETURNS a NEW object after executing a block on each element.    
-   `tap`  iterates over a collection and MUTATES / RETURNS the ORIGINAL element after executing a block on it.       
+   `each` iterates over a collection and DOES some kind of block to each element.
+   `map`  iterates over a collection and RETURNS a NEW object after executing a block on each element.
+   `tap`  iterates over a collection and MUTATES / RETURNS the ORIGINAL element after executing a block on it.
 
 
-# Blocks 
+# Blocks
 
-Blocks are "chunks" of code. They're enclosed either in braces, or between keywords `do` and `end`. Both implementations are identical except for precdence (which is rarely a practical issue). However, Ruby convention favors using braces for blocks that fit on one line, and the latter when a block spans multiple lines. For example, the most recent small program we built used method chaining, which covered multiple lines-- but the blocks within it fit on one line, so they use braces. Also, style has spaces between the brace and the code to distinguish a block from a hash literal. 
+Blocks are "chunks" of code. They're enclosed either in braces, or between keywords `do` and `end`. Both implementations are identical except for precdence (which is rarely a practical issue). However, Ruby convention favors using braces for blocks that fit on one line, and the latter when a block spans multiple lines. For example, the most recent small program we built used method chaining, which covered multiple lines-- but the blocks within it fit on one line, so they use braces. Also, style has spaces between the brace and the code to distinguish a block from a hash literal.
 
-I can think of a block like the body of an anonymous method. I really like that the text suggests this, because that's what it intuitively feels like. Just like a method, it can take parameters (however, unlike a method, the parameters appear at the start of the block between pipes (`||`)). Like a method, the body of a block is not executed at first sight during interpretation-- instead, the block is saved to memory (if only briefly) to be called later.
+I can think of a block like the body of an anonymous method. I really like that the text suggests this, because that's what it intuitively feels like. Just like a method, it can take parameters (however, unlike a method, the parameters appear at the start of the block between pipes (`||`)). Like a method, the body of a block is not executed at first sight during interpretation-- instead, the block is saved to memory (if only briefly) to be called again.
 
-Blocks can appear only after the invocation of a method. If the method takes parameters, the block is written after said parameters. The block, in this form, would be a sort of 'extra parameter' that acts like a mini-temporary-method, which is itself passed to the original method. 
+Blocks can appear only after the invocation of a method. If the method takes parameters, the block is written after said parameters. The block, in this form, would be a sort of 'extra parameter' that acts like a mini-temporary-method, which is itself passed to the original method.
 
 
 ```
@@ -276,11 +276,11 @@ sum = 0
   square = value * value
   sum += square
 end
-puts sum 
+puts sum
 ```
 
 
-The above block is being called by the each method, where each element is passed to the block. Each element here is being passed to the block as the parameter `value`. Parameters are always local to a block, even if they have the same name as variables in the surrounding scope. The `sum` variable is declared outside of the block, and called after the block, meaning that the values calculated within the block remain until the method it exists within ends. However, we cannot call `value` outside of the block, as it's local to the block itself. See below: 
+The above block is being called by the each method, where each element is passed to the block. Each element here is being passed to the block as the parameter `value`. Parameters are always local to a block, even if they have the same name as variables in the surrounding scope. The `sum` variable is declared outside of the block, and called after the block, meaning that the values calculated within the block remain until the method it exists within ends. However, we cannot call `value` outside of the block, as it's local to the block itself. See below:
 
 
 ```
@@ -291,13 +291,13 @@ irb(main):005:0> end
 => [1, 2, 3]
 irb(main):006:0> puts sum
 14
-=> nil                                                   
+=> nil
 irb(main):007:0> puts square
-(irb):7:in `<main>': undefined local variable or method `square' for main:Object (NameError)   
+(irb):7:in `<main>': undefined local variable or method `square' for main:Object (NameError)
 ```
 
 
-That said, a block does not create new variables with existing names, and will overwrite them. See below: 
+That said, a block does not create new variables with existing names, and will overwrite them. See below:
 
 
 ```
@@ -309,22 +309,22 @@ irb(main):014:0> end
 => [1, 2, 3]
 irb(main):015:0> puts sum
 14
-=> nil                                                   
+=> nil
 irb(main):016:0> puts square
 9
 ```
 
-In other scenarios where `square` may have a preexisting method it calls from its class, a method that might not work on the new definition from the block. That could cause more than just unexpected behavior as seen above-- it could cause an error. You can also define block-local variables by putting them after a semicolon in the block's parameter (I had no idea you could do that! So cool). By making `square` local to the block, values assigned inside the block won't affect the value of `square` elsewhere in the program: 
+In other scenarios where `square` may have a preexisting method it calls from its class, a method that might not work on the new definition from the block. That could cause more than just unexpected behavior as seen above-- it could cause an error. You can also define block-local variables by putting them after a semicolon in the block's parameter (I had no idea you could do that! So cool). By making `square` local to the block, values assigned inside the block won't affect the value of `square` elsewhere in the program:
 
 
 ```
 some_collection = [1,2,3]
-some_collection.each do |number; square|  # This cool syntax? It's rare and unconventional. 
-... 
+some_collection.each do |number; square|  # This cool syntax? It's rare and unconventional.
+...
 ```
 
 
-Oh, and there's a shortcut way to access arguments to a block based on their numerical position (wouldn't the term 'index' have applied here, or am I wrong? 'Numerical position' just felt stilted). 
+Oh, and there's a shortcut way to access arguments to a block based on their numerical position (wouldn't the term 'index' have applied here, or am I wrong? 'Numerical position' just felt stilted).
 
 
 ```
@@ -338,4 +338,61 @@ is the same as
 [1,2].each { puts _1 }
 ```
 
-In the shortcut, the variable `_1` is special, and indicates the first positional argument to the block. If there were two, you could reference them as `_2`, and so on. However, the text advises that if this goes past position 1, I should probably give the block variables their own names. 
+In the shortcut, the variable `_1` is special, and indicates the first positional argument to the block. If there were two, you could reference them as `_2`, and so on. However, the text advises that if this goes past position 1, I should probably give the block variables their own names.
+
+
+# Iterator
+
+An "iterator" is a method that can invoke a block of code repeatedely for one or more elements. It's also called an "enumerator" as well. A block can only appear in the source adjacent to a method call (like `do` for instance). Ruby remembers the context in which a block appears (the local variables, current object being interpreted, etc). Ruby refers to this information as a "binding". This encapsulate the execution context at each position in the code. The binding method returns a Binding object that provides the context. In other words, the block is saved to memory. Once the Binding object points to the block we had saved, the method is then called on it.
+
+Within the method, the block can be invoked as if were a method itself, using the `yield` statement. This statement invokes the code in the block passed to the method. If the block doesn't exist, Ruby crashes. After the block is completed, control picks up immediately following the yield. The word "yield" is used to echo the `yield` function in Liskov's language CLU. This language is over 40 years old and /still/ contains features that haven't been widely used.
+
+```
+irb(main):001:1* def two_times
+irb(main):002:1*   yield
+irb(main):003:1*   yield
+irb(main):004:0> end
+irb(main):005:0> two_times { puts "Hello" }
+Hello
+Hello
+=> nil
+irb(main):006:0>
+```
+
+In the example above, the block (between the `{}`) is part of the `two-times` method. In this method, every time `yield` is called, it invokes the code in the block. Easy enough! Blocks are cool because you can pass parameters to them and receive values from them. I've found this to be extremely useful and basically a workhorse of a concept for my own projects. For instance, see below, a method that calculates members of the Fibonacci series up to a chosen value. This is sometimes used in sorting algorithms and analyzing things in nature, so it's worth saving :)
+
+```
+irb(main):006:1* def fib_up_to(max)
+irb(main):008:1*   i1, i2 = 1, 1
+irb(main):009:2*   while i1 <= max
+irb(main):010:2*   yield i1
+irb(main):011:2*   i1, i2 = i2, i1 + i2
+irb(main):012:1*   end
+irb(main):013:0> end
+=> :fib_up_to
+irb(main):014:0> fib_up_to(1000) { |f| print f, " " }
+irb(main):015:0> puts
+1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987
+```
+In this example, `yield` uses the argument `i1`, which is the first variable we declare in the definition. The value is passed to the block ` { |f| print f, " " } `. The parameter list `f` receives the value passed to `yield`, and then by `yield` to the block, so the block prints successive members of the series. This might not make total sense to me now, but we'll be learning more about parallel assignment in a little less than 100 pages. The block could also have been printed as ` { print _1, " " } ` (remember, the variable `_1` is special, and indicates the first positional argument to the block.)
+
+It's conventional to pass just one value to a block, but isn't a requirement as there can be any number of arguments. Blocks behave just like methods in how they communicate with arguments, something the text says we'll be touching on more in Chapter 5. There are many iterators, but here are three common ones:
+
+1.) `each` : The simplest of all iterators-- all it does is yield successive elements of its collection (ergo: it spits out the collection in order). You can do fun things with it though! For instance, `some_array.reverse.each { |i| puts i }` prints an array back in reverse. Just an example of how useful a simple method can be. In fact, it's used as the basis of the language's `for` loops that we learn about on page 159.
+
+Since a block returns a value to the method that yields to it, the value of the last expression evaluated in that block is passed back to the method. That last expression's value is now the value of the `yield` expression. Fun fact: that's how the `find` method works (it's defined in the module `Enumerable`, a mixin for `Array`).
+
+Every time I've ever used `find` in Bone Crawl (like `@@inventory.find { |i| i.is_a?(Fuel) }`, the implementation has always stemmed from:
+
+```
+class Array
+  def find
+    each do |value|
+      return value if yield(value)
+    end
+    nil
+  end
+end
+```
+
+The `find` method is essentially iterating through the array until it finds the value that satisfies the expression in the block, thanks to the `each` method.
