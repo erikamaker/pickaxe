@@ -46,7 +46,7 @@ However, I was not familiar with shift or unshift, and the text didn't give a lo
 
 # HASHES
 
-Hashes are key/value pairs (Python uses a dictionary as its equivalent, Java uses a Java Map, and JavaScript uses... object. Kinda greedy, JavaScript. They're sometimes known as associative arrays, maps, or dictionaries. They're similar to arrays in that they're indexed collections of object references. The difference is HOW they're indexed. Where an array is indexed using integers (starting at 0 and ending at -1), a hash is indexed by its key. If you reference an index in an array, it returns that element's value. Likewise, if you reference a key in a hash, it returns that key's value.
+Hashes are key/value pairs (Python uses a dictionary as its equivalent, Java uses a Java Map, and JavaScript uses... object. Kinda greedy, JavaScript). They're sometimes known as associative arrays, maps, or dictionaries. They're similar to arrays in that they're indexed collections of object references. The difference is HOW they're indexed. Where an array is indexed using integers (starting at 0 and ending at -1), a hash is indexed by its key. If you reference an index in an array, it returns that element's value. Likewise, if you reference a key in a hash, it returns that key's value.
 
 "Hash" is named after an implementation detail: the keys are stored in memory (based on a function that returns the intended unique value for each object). The location of each key can be found without referring to the full object, so looking it up is very fast. The function that returns the unique value is called the 'hashing function', lending to the data structure being called a 'hash'.
 
@@ -378,7 +378,7 @@ In this example, `yield` uses the argument `i1`, which is the first variable we 
 
 It's conventional to pass just one value to a block, but isn't a requirement as there can be any number of arguments. Blocks behave just like methods in how they communicate with arguments, something the text says we'll be touching on more in Chapter 5. There are many iterators, but here are three common ones:
 
-1.) `each` : The simplest of all iterators-- all it does is yield successive elements of its collection (ergo: it spits out the collection in order). You can do fun things with it though! For instance, `some_array.reverse.each { |i| puts i }` prints an array back in reverse. Just an example of how useful a simple method can be. In fact, it's used as the basis of the language's `for` loops that we learn about on page 159.
+1. `each` : The simplest of all iterators-- all it does is yield successive elements of its collection (ergo: it spits out the collection in order). You can do fun things with it though! For instance, `some_array.reverse.each { |i| puts i }` prints an array back in reverse. Just an example of how useful a simple method can be. In fact, it's used as the basis of the language's `for` loops that we learn about on page 159.
 
 Since a block returns a value to the method that yields to it, the value of the last expression evaluated in that block is passed back to the method. That last expression's value is now the value of the `yield` expression. Fun fact: that's how the `find` method works (it's defined in the module `Enumerable`, a mixin for `Array`).
 
@@ -395,4 +395,107 @@ class Array
 end
 ```
 
-The `find` method is essentially iterating through the array until it finds the value that satisfies the expression in the block, thanks to the `each` method.
+`[1, 3, 5, 7, 9].find { |number| number * number > 30 } # => 7`
+
+2. The `find` method is essentially iterating through the array until it finds the value that satisfies the expression in the block, thanks to the `each` method. `each` takes its own block and passes each indexed value to that block. It uses `yield(value)` to pass control to the block argument `find` (specifically  `{ |number| number * number > 30 } # => 7)`). When the block returns true (when a value isn't either `nil` or `false`), the method returns the appropriate element and returns (i.e. the `return value` section of the multi-line block).
+
+In our case, element 7 does the trick. If none do, `nil` is returned (but you already knew that). Something noteworthy: when you `return` from inside a block, the `return` also extends to the associated method. This is because the block is inside another function or method (in this case, the "find" method), so the "return" value from the block actually becomes the return value for the ENTIRE "find" method.
+
+3. Another common iterator is `map`. Also sometimes referred to as `collect`, it takes each element from a collection and passes it to the block. The results returned construct an entirely new array, so the first one is not mutated. For instance:
+
+`["H", "A", "L"].map { |x| x.succ } # => ["I", "B", "M"]`
+
+is implemented as:
+
+```
+class Array
+def map
+result = []
+each do |value|
+result << yield(value)
+end
+result
+end
+end
+```
+
+First, we take the empty result array, and for each value in the collection, `yield` is invoked, with the resulting value appending (`<<`) `result`. This result is returned.
+
+
+Iterators are not limited to accessing only data in arrays and hashes. We can use them to return all kinds of derived values (like in the Fibonacci example we looked at earlier). We can use this capability in our I/O streams to implement `each` and iterate over an entire file. For instance:
+
+```
+f = File.open("testfile")
+f.each do |line|
+puts "The line is: #{line}"
+end
+f.close
+produces:
+The line is: This is line one
+The line is: This is line two
+The line is: This is line three
+The line is: And so on...
+```
+
+A little tidbit: if you want to keep track of the total times you've iterated through a block, use `with_index` method. It's a little method call you can chain after an iterator to provide the sequence. Adding it to what we just wrote above will output the original value, as well as the sequence number. It is theoretically able to work with any properly defined iterator method.
+
+
+4. And now we're looking at `reduce`. I have never encountered this method yet, so I'm excited to learn about it. Historically, it comes from the method name `inject` (while I haven't done any research, I imagine it comes from `C`? Googling real quick... yes, I was right about that). Anyway, this method lets you accumulate a value across members of a collection. For instance, you can sum all the elements in an array:
+
+```
+[1,3,5,7].reduce(0) { |sum, element| sum + element }.
+```
+
+This will output 16. The way it works is, the first time the associated block is called, the first argument to the block is set to the first argument passed to `reduce` (in this case, `0`).
+The block that's passed to reduce takes two arguments, sum and element. The first time the block is called, sum is set to 0 (the initial value), and element is set to the first element in the array, which is 1. The block adds sum and element together, which is 1, and returns that value.
+
+The second time the block is called, sum is set to the previous result of the block (which was 1), and element is set to the next element in the array, which is 3. The block adds sum and element together, which is 4, and returns that value.
+
+The block is called two more times, each time with a new value of sum and element. The final value returned by reduce is the last value that was returned by the block, which is 16.
+
+```
+[1,3,5,7].reduce(1) { |product, element| product * element } # => 105
+```
+
+The above works similarly, though it works specifically with multiplication. I don't know if this is a poor habit to make, but I can't help notice that for the first example, if you add all the elements sequentially, it equals the return value. For the second, if you multiply left to right, the result illustrates the same expectation. I only notice this because the above explanation I wrote doesn't feel as intuitive to me. I get what the text meant by "accumulate a value across members of a collection", and if my way of remembering it isn't dangerous, I think I'll keep at it.
+
+I checked with ChatGPT about what it had to say on this matter and got the following:
+
+That's absolutely right! One way to think about how the reduce method works is to imagine iterating over the collection from left to right and applying the operation (e.g. addition or multiplication) as you go. Here's another simple example to illustrate this concept:
+
+```
+[2, 4, 6, 8].reduce(0) { |sum, element| sum + element } # => 20
+```
+In this example, the reduce method is called on an array of numbers [2, 4, 6, 8], with an initial value of 0. The block that's passed to reduce takes two arguments, sum and element, and adds them together. When we think about iterating over the array from left to right and applying addition as we go, we can see that the calculation would look like this:
+
+```
+0 + 2 = 2
+2 + 4 = 6
+6 + 6 = 12
+12 + 8 = 20
+```
+
+Alright, back to my own thoughts:
+
+Now, if `reduce` is called without a parameter (we were using `0` above), it'll use the first element of the collection as the initial value, starting the iteration with the 2nd value. In other words, we wouldn't have needed the arguments for the examples we did above. In fact, here's an even SHORTIER shortcut:
+
+```
+[1,3,5,7].reduce(:+) # => 16
+[1,3,5,7].reduce(:*) # => 105
+```
+
+Now, finally, for at least the first example we have an even SHORTIEST shortcut:
+
+```
+1,3,5,7].sum
+```
+
+It would make sense for `product` to be a method in the same fashion, but it actually does something different: it returns the cross-product of two arrays.
+
+```
+[1,3,5,7].product([2, 4, 6]) # => [[1, 2], [1, 4], [1, 6], [3, 2], [3, 4], [3,
+# .. 6], [5
+```
+
+
+UP TO PAGE: 72 text (83 browser) : USING BLOCKS FOR TRANSACTIONS
