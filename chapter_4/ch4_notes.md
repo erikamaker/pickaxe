@@ -574,14 +574,15 @@ File.open("filename.txt", "r") do |file|
   # Do something with the file object here
 end
 ```
+
 ```
 The open_and_process method opens a file and passes the file object to a block using the yield keyword. Once the block is executed, the file is closed automatically, shifting the responsibility for closing the file from the user to the file object itself.
 
 The `File` class in Ruby provides a built-in way to manage the lifecycle of a file using a block. When `File.open` is called with a block, the block is executed with a file object, and the file is closed automatically when the block terminates. If `File.open` is called without a block, it simply returns the file object.
 
 The `block_given?` method is used to determine if a block is associated with the current method. By using this method, you can implement a custom `my_open` method that provides similar functionality to `File.open` by opening a file, passing it to a block, and closing it automatically when the block terminates.
-
 ```
+
 ```
 class File
     def self.my_open(*args)
@@ -592,7 +593,8 @@ class File
         result
     end
 end
-``
+```
+
 ```
 The `my_open` method takes a file and creates a new `File` object (this acts as a proxy for the original file) local the method. This proxy object allows the method to read from or write to the file, or perform other operations on the file, without directly manipulating the original file on the file system. The `return` part works just like it does in Bone Crawl-- stop the file if a certain condition is met: `unless block_given`.
 ```
