@@ -536,6 +536,9 @@ In this context, the *args parameter is used to collect any number of positional
 
 So when you call File.open_and_process("testfile", "r"), the two arguments "testfile" and "r" are collected into an array named args by the *args syntax, and then passed to File.open as separate arguments using the *args syntax again.
 
+
+
+
 A question I posed to ChatGPT:
 
 > What if there is a block in the File? Like, let's say the content of the file is a regular novel or something, and then out of nowhere: bam. Someone wrote some Ruby block for no reason.
@@ -569,7 +572,9 @@ Here's of an example of it in practice:
 File.open("filename.txt", "r") do |file|
   # Do something with the file object here
 end
+
 ```
+
 ```
 The open_and_process method opens a file and passes the file object to a block using the yield keyword. Once the block is executed, the file is closed automatically, shifting the responsibility for closing the file from the user to the file object itself.
 
