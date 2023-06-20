@@ -543,7 +543,7 @@ A question I posed to ChatGPT:
 
 > What if there is a block in the File? Like, let's say the content of the file is a regular novel or something, and then out of nowhere: bam. Someone wrote some Ruby block for no reason.
 
-```
+
 That's an interesting scenario! If the content of the file includes a Ruby block, then the `File.open_and_process` method would still work as intended, but it would not execute the Ruby block within the file.
 
 The reason for this is that the block passed to `File.open_and_process` using the `yield` keyword is a separate Ruby block, defined within the context of the `File.open_and_process` method itself. It is not related to any blocks that might be included within the contents of the file being processed.
@@ -551,11 +551,11 @@ The reason for this is that the block passed to `File.open_and_process` using th
 When `File.open_and_process` opens a file, it reads the contents of the file as a string and passes that string to the block passed via `yield`. If the contents of the file include a Ruby block, it will be treated as part of the string and passed as such to the block passed via `yield`. In other words, the Ruby block within the file will be treated as plain text, rather than executable code.
 
 So, in summary: If the content of a file includes a Ruby block, the `File.open_and_process` method will still work as intended, but it will not execute the Ruby block within the file. The contents of the file, including any Ruby blocks within it, will be treated as a plain string and passed to the block passed via `yield`.
-```
+
 
 > So, it would essentially turn code into a string, rendering it non-functional and instead only data?
 
-```
+
 Yes, that's correct! If the contents of a file include a Ruby block, the File.open_and_process method would treat the block as a string, rather than executable code. The entire contents of the file, including the block, would be read into a string and passed to the block passed via yield.
 
 So any Ruby code within the file, including the block, would be treated as a string literal rather than executable code. The code would still be present within the string, but it would not be interpreted as code by the Ruby interpreter.
@@ -566,22 +566,22 @@ In other words, any code within the file would be treated as data, rather than a
 In our example, after `yield`, the file is closed. This removes the responsibility of closing the open file from the user to the file. It's such a useful notion that the class `File` standard to the Ruby library supports it directly. If `File.open` has an associated block, then that block will be invoked with a file object, and it will close when the block terminates. The reason we wrote it in the class above is to illustrate how it works on a higher-level, broken down.
 
 Here's of an example of it in practice:
-```
+
 
 
 ```
 File.open("filename.txt", "r") do |file|
-  # Do something with the file object here
+  // Do something with the file object here
 end
 ```
 
-```
+
 The open_and_process method opens a file and passes the file object to a block using the yield keyword. Once the block is executed, the file is closed automatically, shifting the responsibility for closing the file from the user to the file object itself.
 
 The `File` class in Ruby provides a built-in way to manage the lifecycle of a file using a block. When `File.open` is called with a block, the block is executed with a file object, and the file is closed automatically when the block terminates. If `File.open` is called without a block, it simply returns the file object.
 
 The `block_given?` method is used to determine if a block is associated with the current method. By using this method, you can implement a custom `my_open` method that provides similar functionality to `File.open` by opening a file, passing it to a block, and closing it automatically when the block terminates.
-```
+
 
 ```
 class File
@@ -595,9 +595,9 @@ class File
 end
 ```
 
-```
+
 The `my_open` method takes a file and creates a new `File` object (this acts as a proxy for the original file) local the method. This proxy object allows the method to read from or write to the file, or perform other operations on the file, without directly manipulating the original file on the file system. The `return` part works just like it does in Bone Crawl-- stop the file if a certain condition is met: `unless block_given`.
-```
+
 
 The text says we'll be discussing exception-handling soon!
 
